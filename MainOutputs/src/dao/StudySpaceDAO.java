@@ -55,7 +55,7 @@ public class StudySpaceDAO {
                 "FROM StudySpace WHERE SpaceID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, spaceID);
 
@@ -81,7 +81,7 @@ public class StudySpaceDAO {
         String sql = "SELECT 1 FROM StudySpace WHERE SpaceID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, spaceID);
 
@@ -99,7 +99,7 @@ public class StudySpaceDAO {
         String sql = "SELECT SpaceStatus FROM StudySpace WHERE SpaceID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, spaceID);
 
@@ -111,6 +111,78 @@ public class StudySpaceDAO {
             }
         } catch (SQLException e) {
             System.out.println("Error checking space status: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+    public boolean updateSpaceStatus(int spaceID, String status) {
+
+        String[] validStatuses = {"Available", "Occupied", "Under Maintenance"};
+
+        boolean valid = false;
+
+        for (String validStatus : validStatuses) {
+            if (validStatus.equalsIgnoreCase(status)) {
+                status = validStatus;
+                valid = true;
+                break;
+            }
+        }
+
+        String sql = "UPDATE StudySpace SET SpaceStatus = ? WHERE SpaceID = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, status);
+            statement.setInt(2, spaceID);
+
+            int rowsUpdated = statement.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Study space status updated");
+                return true;
+            }
+
+            System.out.println("Study space not found");
+
+        } catch (SQLException e) {
+            System.out.println("Error updating study space status: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+    public boolean releaseSpace(int spaceID) {
+
+        String sql = "UPDATE StudySpace " +
+                "SET SpaceStatus = 'Available' " +
+                "WHERE SpaceID = ? " +
+                "AND SpaceStatus = 'Occupied' " +
+                "AND NOT EXISTS (" +
+                "SELECT 1 FROM Reservation " +
+                "WHERE SpaceID = ? " +
+                "AND BookingStatus = 'CheckedIn')";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, spaceID);
+            statement.setInt(2, spaceID);
+
+            int rowsUpdated = statement.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Study space is now available.");
+                return true;
+            }
+
+            System.out.println("Study space remains occupied or is not currently occupied.");
+            return false;
+
+        } catch (SQLException e) {
+            System.out.println("Error releasing study space: " + e.getMessage());
         }
 
         return false;

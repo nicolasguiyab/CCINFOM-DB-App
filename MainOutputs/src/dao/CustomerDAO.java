@@ -3,6 +3,7 @@ package dao;
 import database.DatabaseConnection;
 import model.Customer;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,7 +55,7 @@ public class CustomerDAO {
                 "VALUES (?, ?, ?, ?, ?, ?)"; //"?" is a placeholder for the prepared statement
 
         try (Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, customer.getStudentID()); //setString inputs
             statement.setString(2, customer.getFirstName()); //them into the
@@ -79,7 +80,7 @@ public class CustomerDAO {
                 "FROM Customer WHERE StudentID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, studentID);
 
@@ -113,7 +114,7 @@ public class CustomerDAO {
                 "WHERE StudentID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, mobileNumber);
             statement.setString(2, university);
@@ -131,7 +132,7 @@ public class CustomerDAO {
         String sql = "DELETE FROM Customer WHERE StudentID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, studentID);
 
@@ -148,7 +149,7 @@ public class CustomerDAO {
         String sql = "SELECT 1 FROM Customer WHERE CustomerID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, customerID);
 
