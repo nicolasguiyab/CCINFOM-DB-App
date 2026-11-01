@@ -3,9 +3,13 @@ package dao;
 import database.DatabaseConnection;
 import model.HubBranch;
 
+import javax.xml.crypto.Data;
+import java.security.spec.ECField;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class HubBranchDAO {
@@ -18,8 +22,8 @@ public class HubBranchDAO {
                 + "FROM HubBranch";
 
         try (Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql);
-        ResultSet result = statement.executeQuery()) {
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet result = statement.executeQuery()) {
 
             while (result.next()) {
 
@@ -39,5 +43,33 @@ public class HubBranchDAO {
         }
 
         return branches;
+    }
+
+    public boolean isWithinOperatingHours(int spaceID, Time startTime, Time endTime) {
+
+        String sql = "SELECT h.OperatingHoursOpen, h.OperatingHoursClose " +
+                "FROM HubBranch h " +
+                "JOIN StudySpace s ON h.BranchID = s.BranchID " +
+                "WHERE s.SpaceID = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, spaceID);
+
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    Time openingTime = result.getTime("OperatingHoursOpen");
+                    Time closingTime = result.getTime("OperatingHoursClose");
+
+                    return !startTime.before(openingTime) && !endTime.after(closingTime);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error checking operating hours: " + e.getMessage());
+        }
+
+        return false;
     }
 }
