@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Hub - Reservation</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <div class="reservation-card">
+        <h2>Reserve a Study Space</h2>
+        
+        <form action="#" method="POST">
+            <!-- Customer ID -->
+            <label for="customerID">Customer ID:</label>
+            <input type="number" id="customerID" name="customerID" placeholder="Enter your ID" required>
+
+            <!-- Study Space Selection -->
+            <label for="spaceID">Select Study Space:</label>
+            <select id="spaceID" name="spaceID">
+                <option value="1">Quiet Zone - Desk 1</option>
+                <option value="2">Group Room - Table A</option>
+                <option value="3">Private Pod 3</option>
+            </select>
+
+            <!-- Calendar Date Picker -->
+            <label for="reservationDate">Select Date:</label>
+            <input type="date" id="reservationDate" name="reservationDate" required>
+
+            <!-- Time Inputs -->
+            <label for="startTime">Start Time:</label>
+            <input type="time" id="startTime" name="startTime" required>
+
+            <label for="endTime">End Time:</label>
+            <input type="time" id="endTime" name="endTime" required>
+
+            <!-- Submit Button -->
+            <button type="submit">Confirm Reservation</button>
+        </form>
+    </div>
+
+</body>
+</html>
