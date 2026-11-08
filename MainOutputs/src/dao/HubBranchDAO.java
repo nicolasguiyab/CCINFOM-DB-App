@@ -3,7 +3,6 @@ package dao;
 import database.DatabaseConnection;
 import model.HubBranch;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

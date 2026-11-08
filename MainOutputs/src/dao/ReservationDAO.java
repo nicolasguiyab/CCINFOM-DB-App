@@ -449,5 +449,267 @@ public class ReservationDAO {
         return reservations;
     }
 
+    public ArrayList<Reservation> getReservationsByStatus(String status) {
 
+        ArrayList<Reservation> reservations = new ArrayList<>();
+
+        String sql = "SELECT * FROM Reservation " +
+                "WHERE BookingStatus = ? " +
+                "ORDER BY BookingDate DESC, StartTime DESC";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, status);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                while (result.next()) {
+
+                    Reservation reservation = new Reservation(
+                            result.getInt(("BookingID")),
+                            result.getInt("CustomerID"),
+                            result.getInt("SpaceID"),
+                            result.getDate("BookingDate"),
+                            result.getTime("StartTime"),
+                            result.getTime("EndTime"),
+                            result.getString("BookingStatus"),
+                            result.getBigDecimal("HourlyRateAtBooking"),
+                            result.getBigDecimal("TotalPrice")
+                    );
+
+                    reservations.add(reservation);
+
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving reservations by status: " + e.getMessage());
+        }
+
+        return reservations;
+    }
+
+    public ArrayList<Reservation> getReservationByDate(Date bookingDate) {
+
+        ArrayList<Reservation> reservations = new ArrayList<>();
+
+        String sql = "SELECT * FROM Reservation " +
+                "WHERE BookingDate = ? " +
+                "ORDER BY StartTime ASC";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setDate(1, bookingDate);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                while (result.next()) {
+
+                    Reservation reservation = new Reservation(
+                            result.getInt("BookingID"),
+                            result.getInt("CustomerID"),
+                            result.getInt("SpaceID"),
+                            result.getDate("BookingDate"),
+                            result.getTime("StartTime"),
+                            result.getTime("EndTime"),
+                            result.getString("BookingStatus"),
+                            result.getBigDecimal("HourlyRateAtBooking"),
+                            result.getBigDecimal("TotalPrice")
+                    );
+
+                    reservations.add(reservation);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error in retrieving by date: " + e.getMessage());
+        }
+
+        return reservations;
+    }
+
+    public ArrayList<Reservation> getReservationBySpace(int spaceID) {
+
+        ArrayList<Reservation> reservations = new ArrayList<>();
+
+        String sql = "SELECT * FROM Reservation " +
+                "WHERE SpaceID = ? " +
+                "ORDER BY BookingDate DESC, StartTime DESC";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, spaceID);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                while (result.next()) {
+
+                    Reservation reservation = new Reservation(
+                            result.getInt("BookingID"),
+                            result.getInt("CustomerID"),
+                            result.getInt("SpaceID"),
+                            result.getDate("BookingDate"),
+                            result.getTime("StartTime"),
+                            result.getTime("EndTime"),
+                            result.getString("BookingStatus"),
+                            result.getBigDecimal("HourlyRateAtBooking"),
+                            result.getBigDecimal("TotalPrice")
+                    );
+
+                    reservations.add(reservation);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error in retrieving reservation: " + e.getMessage());
+        }
+
+        return reservations;
+    }
+
+    public ArrayList<Reservation> getUpcomingReservations(int customerID) {
+
+        ArrayList<Reservation> reservations = new ArrayList<>();
+
+        String sql = "SELECT * FROM Reservation " +
+                "WHERE CustomerID = ? " +
+                "AND (BookingDate > CURRENT_DATE " +
+                "OR (BookingDate = CURRENT_DATE AND StartTime > CURRENT_TIME)) " +
+                "AND BookingStatus IN ('Pending', 'Confirmed') " +
+                "ORDER BY BookingDate ASC, StartTime ASC";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, customerID);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                while (result.next()) {
+
+                    Reservation reservation = new Reservation(
+                            result.getInt("BookingID"),
+                            result.getInt("CustomerID"),
+                            result.getInt("SpaceID"),
+                            result.getDate("BookingDate"),
+                            result.getTime("StartTime"),
+                            result.getTime("EndTime"),
+                            result.getString("BookingStatus"),
+                            result.getBigDecimal("HourlyRateAtBooking"),
+                            result.getBigDecimal("TotalPrice")
+                    );
+
+                    reservations.add(reservation);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Errror retrieving upcoming reservations: " + e.getMessage());
+        }
+
+        return reservations;
+    }
+
+    public BigDecimal getTotalRevenueBySpace(int spaceID) {
+
+        String sql = "SELECT COALESCE(SUM(TotalPrice), 0) " +
+                "FROM Reservation " +
+                "WHERE SpaceID = ? " +
+                "AND BookingStatus = 'Completed'";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, spaceID);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                if (result.next()) {
+                    return result.getBigDecimal(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error calculating space revenue: " + e.getMessage());
+        }
+
+        return BigDecimal.ZERO;
+    }
+
+    public BigDecimal getTotalRevenue() {
+
+        String sql = "SELECT COALESCE(SUM(TotalPrice), 0) " +
+                "FROM Reservation " +
+                "WHERE BookingStatus = 'Completed'";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return result.getBigDecimal(1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error in calculating revenue: " + e.getMessage());
+        }
+
+        return BigDecimal.ZERO;
+    }
+
+    public BigDecimal getTotalRevenueByBranch(int branchID) {
+
+        String sql = "SELECT COALESCE(SUM(r.TotalPrice), 0) " +
+                "FROM Reservation r " +
+                "JOIN StudySpace s ON r.SpaceID = s.SpaceID " +
+                "WHERE s.BranchID = ? " +
+                "AND r.BookingStatus = 'Completed'";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, branchID);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                if (result.next()) {
+                    return result.getBigDecimal(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error calculating branch expence: " + e.getMessage());
+        }
+
+        return BigDecimal.ZERO;
+    }
+
+    public BigDecimal getMonthlyRevenue(int month, int year) {
+
+        String sql = "SELECT COALESCE(SUM(TotalPrice), 0) " +
+                "FROM Reservation " +
+                "WHERE MONTH(BookingDate) = ? " +
+                "AND YEAR(BookingDate) = ? " +
+                "AND BookingStatus = 'Completed'";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, month);
+            statement.setInt(2, year);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                if (result.next()) {
+                    return result.getBigDecimal(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error calculating monthly revenue: " + e.getMessage());
+        }
+
+        return BigDecimal.ZERO;
+    }
 }
