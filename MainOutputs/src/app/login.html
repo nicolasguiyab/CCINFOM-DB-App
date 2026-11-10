@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Hub - Login</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <div class="reservation-card">
+        <h2>Study Hub Login</h2>
+        
+        <form action="reservation.html" method="GET">
+            <!-- Username / Customer ID -->
+            <label for="username">Username or ID:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username or ID" required>
+
+            <!-- Password -->
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter password" required>
+
+            <!-- Role Selector (Student vs Admin) -->
+            <label for="role">Log in as:</label>
+            <select id="role" name="role">
+                <option value="student">Student / Customer</option>
+                <option value="admin">Admin / Staff</option>
+            </select>
+
+            <!-- Submit Button -->
+            <button type="submit">Log In</button>
+        </form>
+
+        <!-- Link to Registration -->
+        <p style="text-align: center; margin-top: 15px; font-size: 13px; color: #666;">
+            Don't have an account? <a href="register.html" style="color: #007bff; text-decoration: none;">Register here</a>
+        </p>
+    </div>
+
+</body>
+</html>
