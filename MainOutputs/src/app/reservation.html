@@ -23,9 +23,9 @@
                 <option value="3">Private Pod 3</option>
             </select>
 
-            <!-- Calendar Date Picker -->
+            <!-- Calendar Date Picker (Allows direct typing & starts at current month) -->
             <label for="reservationDate">Select Date:</label>
-            <input type="date" id="reservationDate" name="reservationDate" required>
+            <input type="date" id="reservationDate" name="reservationDate" min="2026-11-10" required>
 
             <!-- Time Inputs -->
             <label for="startTime">Start Time:</label>
@@ -36,6 +36,9 @@
 
             <!-- Submit Button -->
             <button type="submit">Confirm Reservation</button>
+            <p style="text-align: center; margin-top: 15px; font-size: 13px; color: #666;">
+    Need to switch accounts? <a href="login.html">Back to Login</a>
+</p>
         </form>
     </div>
 
