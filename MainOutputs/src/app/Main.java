@@ -1,31 +1,46 @@
 package app;
 
-//import dao.HubBranchDAO;
-//import model.HubBranch;
+import dao.CustomerDAO;
+import dao.ReservationDAO; 
+import model.Customer;
 
-//import dao.CustomerDAO;
-//import model.Customer;
+import java.sql.Time;      
+import java.sql.Date;      
+import java.util.Scanner;
 
-import dao.ReservationDAO;
-
-import java.sql.Time;
-import java.sql.Date;
-
-//needs SQL server to be running
 public class Main {
 
     public static void main(String[] args) {
-
-        ReservationDAO reservationDAO = new ReservationDAO();
-
-        boolean created = reservationDAO.createReservation(
-                1,
-                1,
-                Date.valueOf("2026-12-01"),
-                Time.valueOf("09:00:00"),
-                Time.valueOf("11:00:00")
-        );
-
-        System.out.println("Reservation created: " + created);
+        
+        
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("=== WELCOME TO STUDY HUB ===");
+        System.out.print("Enter your ID to Log In: ");
+        
+        
+        String inputtedID = scanner.nextLine(); 
+        
+       
+        if (inputtedID.equals("admin")) {
+            System.out.println("\nSUCCESS: Admin logged in.");
+            System.out.println("Redirecting to Admin Dashboard...");
+        } 
+        else {
+           
+            CustomerDAO dao = new CustomerDAO();
+            Customer existingCustomer = dao.searchCustomerByStudentID(inputtedID);
+            
+            if (existingCustomer != null) {
+                System.out.println("\nSUCCESS: Welcome back, " + existingCustomer.getFirstName() + "!");
+                System.out.println("Redirecting to Reservation Page...");
+            } 
+            
+            else {
+                System.out.println("\nNOTICE: User not found in database.");
+                System.out.println("Redirecting to Registration Page...");
+            }
+        }
+        
+        scanner.close();
     }
 }
