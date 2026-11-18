@@ -1,52 +1,92 @@
+/* --- BASE BACKGROUND & FONT --- */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6; /* Soft light gray/blue background */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
+    padding: 20px 0;
 }
 
+/* --- THE MAIN CARD (Login & Reservation) --- */
 .reservation-card {
     background: #ffffff;
-    padding: 25px 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 320px;
-}
-
-h2 {
-    margin-bottom: 20px;
-    color: #333333;
-    text-align: center;
-}
-
-label {
-    display: block;
-    margin-top: 10px;
-    font-size: 14px;
-    color: #555555;
-}
-
-input, select, button {
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    max-width: 400px;
     box-sizing: border-box;
 }
 
+.reservation-card h2 {
+    text-align: center;
+    color: #333333;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+/* --- FORM LABELS & INPUTS --- */
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555555;
+    margin-bottom: 6px;
+    margin-top: 15px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: #ffffff;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* --- THE SUBMIT BUTTON --- */
 button {
-    margin-top: 20px;
-    background-color: #007bff;
+    width: 100%;
+    background-color: #007bff; /* Modern blue */
     color: white;
-    font-weight: bold;
+    padding: 12px;
+    margin-top: 25px;
     border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 button:hover {
     background-color: #0056b3;
+}
+
+/* --- LINKS --- */
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a:hover {
+    text-decoration: underline;
 }

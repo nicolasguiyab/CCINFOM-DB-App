@@ -187,4 +187,27 @@ public class StudySpaceDAO {
 
         return false;
     }
+
+    public int getBranchIDBySpaceID(int spaceID) {
+
+        String sql = "SELECT BranchID FROM StudySpace WHERE SpaceID = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, spaceID);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                if (result.next()) {
+                    return result.getInt("BranchID");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
 }

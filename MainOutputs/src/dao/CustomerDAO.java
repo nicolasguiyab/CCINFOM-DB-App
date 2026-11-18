@@ -160,4 +160,23 @@ public class CustomerDAO {
             return false;
         }
     }
+    
+    public boolean authenticateUser(String studentID, String password) {
+        String sql = "SELECT 1 FROM Customer WHERE StudentID = ? AND Password = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, studentID);
+            statement.setString(2, password);
+
+            try (ResultSet result = statement.executeQuery()) {
+                return result.next(); // Returns true if a match is found
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error authenticating customer: " + e.getMessage());
+            return false;
+        }
+    }
 }
