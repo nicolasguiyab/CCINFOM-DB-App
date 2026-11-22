@@ -323,7 +323,7 @@ public class ExpenseDAO {
 
     public BigDecimal getMonthlyIncome(int month, int year) {
 
-        String sql = "SELECT COALESCE(SUM(Amound), 0) AS TotalIncome " +
+        String sql = "SELECT COALESCE(SUM(Amount), 0) AS TotalIncome " +
                 "FROM Expense " +
                 "WHERE TransactionType = 'Income' " +
                 "AND MONTH(ExpenseDate) = ? " +
