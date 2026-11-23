@@ -1,40 +1,62 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Study Hub - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Hub | Login</title>
+
     <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
 
-    <div class="reservation-card">
-        <h2>Study Hub Login</h2>
-        
-        <form action="reservation.html" method="GET">
-            <!-- Username / Customer ID -->
-            <label for="username">Username or ID:</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username or ID" required>
+<div class="container">
+    <div class="form-container">
 
-            <!-- Password -->
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="Enter password" required>
+        <h1>Study Hub</h1>
+        <h2>Customer Login</h2>
 
-            <!-- Role Selector (Student vs Admin) -->
-            <label for="role">Log in as:</label>
-            <select id="role" name="role">
-                <option value="student">Student / Customer</option>
-                <option value="admin">Admin / Staff</option>
-            </select>
+        <p>Welcome back! Log in to your account.</p>
 
-            <!-- Submit Button -->
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label for="customerID">Customer ID</label>
+                <input
+                        type="number"
+                        id="customerID"
+                        name="customerID"
+                        placeholder="Enter your Customer ID"
+                        required
+                        min="1"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                >
+            </div>
+
             <button type="submit">Log In</button>
+
         </form>
 
-        <!-- Link to Registration -->
-        <p style="text-align: center; margin-top: 15px; font-size: 13px; color: #666;">
-            Don't have an account? <a href="register.html" style="color: #007bff; text-decoration: none;">Register here</a>
+        <p>
+            Don't have an account?
+            <a href="./register.html">Register here</a>
         </p>
+
     </div>
+</div>
+
+<script src="./login.js"></script>
 
 </body>
 </html>

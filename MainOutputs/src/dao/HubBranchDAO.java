@@ -70,4 +70,37 @@ public class HubBranchDAO {
 
         return false;
     }
+
+    public String[] getOperatingHours(int branchID) {
+
+        String sql =
+                "SELECT OperatingHoursOpen, OperatingHoursClose " +
+                        "FROM HubBranch WHERE BranchID = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, branchID);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                if (result.next()) {
+
+                    Time opening = result.getTime("OperatingHoursOpen");
+                    Time closing = result.getTime("OperatingHoursClose");
+
+                    return new String[] {
+                            opening.toString().substring(0, 5),
+                            closing.toString().substring(0, 5)
+                    };
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving operating hours: "
+                    + e.getMessage());
+        }
+
+        return null;
+    }
 }

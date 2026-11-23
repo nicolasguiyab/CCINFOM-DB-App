@@ -14,6 +14,8 @@ import java.math.RoundingMode;
 import java.time.Duration;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReservationDAO {
 
@@ -712,4 +714,115 @@ public class ReservationDAO {
 
         return BigDecimal.ZERO;
     }
+
+
+
+    public ArrayList<Map<String, String>> getReservationSlots(
+            int spaceID, Date bookingDate) {
+
+        ArrayList<Map<String, String>> slots = new ArrayList<>();
+
+        String sql =
+                "SELECT StartTime, EndTime, BookingStatus, PaymentStatus " +
+                        "FROM Reservation " +
+                        "WHERE SpaceID = ? " +
+                        "AND BookingDate = ? " +
+                        "AND BookingStatus IN ('Pending', 'Confirmed', 'CheckedIn') " +
+                        "ORDER BY StartTime ASC";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, spaceID);
+            statement.setDate(2, bookingDate);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                while (result.next()) {
+
+                    Map<String, String> slot = new HashMap<>();
+
+                    slot.put("startTime",
+                            result.getTime("StartTime").toString());
+
+                    slot.put("endTime",
+                            result.getTime("EndTime").toString());
+
+                    slot.put("bookingStatus",
+                            result.getString("BookingStatus"));
+
+                    slot.put("paymentStatus",
+                            result.getString("PaymentStatus"));
+
+                    slots.add(slot);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(
+                    "Error retrieving reservation slots: " + e.getMessage()
+            );
+        }
+
+        return slots;
+    }
+
+
+    public ArrayList<Map<String, String>> getReservationsByMonth(
+            int spaceID, int month, int year) {
+
+        ArrayList<Map<String, String>> reservations = new ArrayList<>();
+
+        String sql =
+                "SELECT BookingDate, StartTime, EndTime, " +
+                        "BookingStatus, PaymentStatus " +
+                        "FROM Reservation " +
+                        "WHERE SpaceID = ? " +
+                        "AND MONTH(BookingDate) = ? " +
+                        "AND YEAR(BookingDate) = ? " +
+                        "AND BookingStatus IN ('Pending', 'Confirmed', 'CheckedIn') " +
+                        "ORDER BY BookingDate, StartTime";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, spaceID);
+            statement.setInt(2, month);
+            statement.setInt(3, year);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                while (result.next()) {
+
+                    Map<String, String> reservation = new HashMap<>();
+
+                    reservation.put("bookingDate",
+                            result.getDate("BookingDate").toString());
+
+                    reservation.put("startTime",
+                            result.getTime("StartTime").toString());
+
+                    reservation.put("endTime",
+                            result.getTime("EndTime").toString());
+
+                    reservation.put("bookingStatus",
+                            result.getString("BookingStatus"));
+
+                    reservation.put("paymentStatus",
+                            result.getString("PaymentStatus"));
+
+                    reservations.add(reservation);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(
+                    "Error retrieving monthly reservations: " + e.getMessage()
+            );
+        }
+
+        return reservations;
+    }
+
+
 }
