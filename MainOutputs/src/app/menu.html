@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyHub — Main Menu</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-brand">StudyHub</div>
+    <nav class="nav-links">
+      <a href="menu.html" class="active">Main Menu</a>
+      <a href="reservation.html">Book a Space</a>
+      <a href="payment.html">Payment</a>
+    </nav>
+    <div class="nav-user">
+      <span id="customerName">Welcome, Student</span>
+      <a href="login.html" class="btn btn-outline">Logout</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Highlight Banner for Active Unpaid Reservation -->
+    <section class="banner">
+      <div>
+        <div class="badge-group">
+          <span class="badge badge-info">Reserved</span>
+          <span class="badge badge-warning">Unpaid — Pay Online or In-Store</span>
+        </div>
+        <h2>Upcoming Reservation — Ortigas Branch</h2>
+        <p>Quiet Desk #4 • Nov 22, 2026 • 1:00 PM – 4:00 PM (3 hrs) • <strong>₱450.00</strong></p>
+      </div>
+      <a href="payment.html" class="btn btn-primary">Pay Online Now</a>
+    </section>
+
+    <!-- Quick Action Cards -->
+    <section class="section">
+      <h3>What would you like to do?</h3>
+      <div class="card-grid">
+        <a href="reservation.html" class="action-card">
+          <div class="card-icon">📅</div>
+          <h4>Book a Study Space</h4>
+          <p>Choose a hub branch, study space type, and time slot.</p>
+          <span class="card-link">Go to Reservation →</span>
+        </a>
+
+        <a href="#my-reservations" class="action-card">
+          <div class="card-icon">📋</div>
+          <h4>My Reservations</h4>
+          <p>View your active bookings, check payment status, or settle unpaid slots.</p>
+          <span class="card-link">View Bookings ↓</span>
+        </a>
+
+        <a href="payment.html" class="action-card">
+          <div class="card-icon">💳</div>
+          <h4>Payment Options</h4>
+          <p>Pay online via GCash, Maya, or Card—or choose to pay in-store.</p>
+          <span class="card-link">Go to Payment →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Active & Past Reservations Table -->
+    <section class="section" id="my-reservations">
+      <h3>My Reservations</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Ref ID</th>
+              <th>Branch</th>
+              <th>Study Space</th>
+              <th>Date &amp; Time</th>
+              <th>Total</th>
+              <th>Booking Status</th>
+              <th>Payment Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#RES-1042</td>
+              <td>Ortigas Branch</td>
+              <td>Quiet Desk #4</td>
+              <td>Nov 22, 2026 (1:00 PM – 4:00 PM)</td>
+              <td>₱450.00</td>
+              <td><span class="badge badge-info">Reserved</span></td>
+              <td><span class="badge badge-warning">Unpaid (In-Store / Web)</span></td>
+              <td><a href="payment.html" class="btn btn-sm btn-primary">Pay Online</a></td>
+            </tr>
+            <tr>
+              <td>#RES-1018</td>
+              <td>Taft Branch</td>
+              <td>Group Room B</td>
+              <td>Nov 18, 2026 (2:00 PM – 5:00 PM)</td>
+              <td>₱900.00</td>
+              <td><span class="badge badge-info">Reserved</span></td>
+              <td><span class="badge badge-success">Paid (GCash)</span></td>
+              <td><span class="muted">Settled</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
