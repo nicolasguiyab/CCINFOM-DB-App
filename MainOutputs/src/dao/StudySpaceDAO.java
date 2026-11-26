@@ -187,4 +187,69 @@ public class StudySpaceDAO {
 
         return false;
     }
+
+    public int getBranchIDBySpaceID(int spaceID) {
+
+        String sql = "SELECT BranchID FROM StudySpace WHERE SpaceID = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, spaceID);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                if (result.next()) {
+                    return result.getInt("BranchID");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    public ArrayList<StudySpace> getStudySpacesByBranch(int branchID) {
+
+        ArrayList<StudySpace> spaces = new ArrayList<>();
+
+        String sql =
+                "SELECT s.SpaceID, b.BranchName, s.SpaceType, " +
+                        "s.Capacity, s.HourlyRate, s.SpaceStatus " +
+                        "FROM StudySpace s " +
+                        "JOIN HubBranch b ON s.BranchID = b.BranchID " +
+                        "WHERE s.BranchID = ? " +
+                        "ORDER BY s.SpaceID";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, branchID);
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                while (result.next()) {
+
+                    StudySpace space = new StudySpace(
+                            result.getInt("SpaceID"),
+                            result.getString("BranchName"),
+                            result.getString("SpaceType"),
+                            result.getInt("Capacity"),
+                            result.getDouble("HourlyRate"),
+                            result.getString("SpaceStatus")
+                    );
+
+                    spaces.add(space);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving spaces by branch: "
+                    + e.getMessage());
+        }
+
+        return spaces;
+    }
 }
